@@ -1,16 +1,45 @@
-from typing import List, Dict, Optional, Tuple
-from .leitor_dados import open_file  # Usando open_file para carregar os dados
+from typing import List, Dict, Optional
 from datetime import datetime
+import os
+import csv
 
-def carregar_dados() -> Optional[List[Dict[str, str]]]:
+
+def open_file(caminho: str) -> Optional[List[Dict[str, str]]]:
+    """
+    Função para abrir e carregar dados de um arquivo CSV.
+    :param caminho: Caminho para o arquivo CSV.
+    :return: Lista de dicionários com os dados ou None em caso de falha.
+    """
+    try:
+        if not caminho:
+            caminho = os.path.join(os.getcwd(), "dados.csv")  # Caminho padrão
+        
+        if not os.path.isfile(caminho):
+            raise FileNotFoundError(f"Arquivo não encontrado: {caminho}")
+
+        with open(caminho, mode='r', encoding='utf-8') as arquivo:
+            leitor = csv.DictReader(arquivo)
+            return [linha for linha in leitor]
+    except FileNotFoundError as e:
+        print(f"Erro: {e}")
+        return None
+    except Exception as e:
+        print(f"Erro ao abrir o arquivo: {e}")
+        return None
+
+
+def carregar_dados(caminho: Optional[str] = None) -> Optional[List[Dict[str, str]]]:
     """
     Carrega os dados do arquivo CSV e converte a coluna de datas para objetos datetime.
+
+    Args:
+        caminho (Optional[str]): Caminho para o arquivo CSV.
 
     Returns:
         Optional[List[Dict[str, str]]]: Dados processados ou None em caso de falha.
     """
     try:
-        dados = open_file("")
+        dados = open_file(caminho)
         if dados:
             for tweet in dados:
                 tweet['tweet_created'] = datetime.strptime(tweet['tweet_created'], "%Y-%m-%d %H:%M:%S %z")
@@ -19,13 +48,15 @@ def carregar_dados() -> Optional[List[Dict[str, str]]]:
         print(f"Erro ao carregar dados: {e}")
         return None
 
-def contar_tweets_por_periodo(ano: int, mes: Optional[int] = None) -> int:
+
+def contar_tweets_por_periodo(ano: int, mes: Optional[int] = None, caminho: Optional[str] = None) -> int:
     """
     Conta o número de tweets publicados em um ano e opcionalmente em um mês específico.
 
     Args:
         ano (int): Ano para filtrar os tweets.
         mes (Optional[int]): Mês para filtrar os tweets (opcional).
+        caminho (Optional[str]): Caminho para o arquivo CSV.
 
     Returns:
         int: Total de tweets no período especificado.
@@ -33,7 +64,7 @@ def contar_tweets_por_periodo(ano: int, mes: Optional[int] = None) -> int:
     if not ano:
         raise ValueError("Por favor, forneça ao menos o ano para a análise.")
 
-    dados = carregar_dados()
+    dados = carregar_dados(caminho)
     if dados is None:
         print("Não foi possível carregar os dados.")
         return 0
@@ -50,22 +81,25 @@ def contar_tweets_por_periodo(ano: int, mes: Optional[int] = None) -> int:
     print(f"Total de tweets no período: {total_tweets}")
     return total_tweets
 
-# processamento_temporal.py
 
-def dia_com_mais_tweets(dados):
+def dia_com_mais_tweets(dados: List[Dict[str, str]]) -> Optional[str]:
     """
     Função para determinar o dia com mais tweets no conjunto de dados
     sem usar pandas, apenas com listas e operações básicas.
-    :param dados: Conjunto de dados com as informações carregadas por open_file()
-    :return: Data com mais tweets.
+
+    Args:
+        dados (List[Dict[str, str]]): Conjunto de dados carregados.
+
+    Returns:
+        Optional[str]: Data com mais tweets ou None.
     """
     try:
         # Contagem de ocorrências de datas com listas e dicionários
         contagem_datas = {}
-        
+
         # Iterar sobre as linhas dos dados
         for tweet in dados:
-            data = tweet.get("data")  # Obtendo o campo de data
+            data = tweet.get("tweet_created").date()  # Obtendo a data como objeto
             if data:  # Se a data existir
                 if data in contagem_datas:
                     contagem_datas[data] += 1
@@ -75,12 +109,11 @@ def dia_com_mais_tweets(dados):
         # Encontrar a data com maior contagem
         if contagem_datas:
             dia_mais_tweets = max(contagem_datas, key=contagem_datas.get)  # Data com maior número de ocorrências
-            return dia_mais_tweets
+            return str(dia_mais_tweets)  # Convertendo para string
         else:
             return None
     except Exception as e:
         print(f"Erro ao processar os dados: {e}")
         return None
-
 
 
