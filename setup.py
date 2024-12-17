@@ -14,7 +14,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Emmanoel Cardoso",
     author_email="emmanoel@example.com",
-    packages=find_packages(where=".", include=["ciasAI", "ciasAI.*"]),
+    packages=find_packages(where="ciasAI", include=["ciasAI", "ciasAI.*"]),  # Ajuste aqui
     install_requires=requirements,
     python_requires=">=3.6",
     include_package_data=True,
@@ -24,6 +24,3 @@ setup(
         "Operating System :: OS Independent",
     ],
 )
-
-
-
