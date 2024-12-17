@@ -10,7 +10,7 @@ def carregar_dados() -> Optional[List[Dict[str, str]]]:
         Optional[List[Dict[str, str]]]: Dados processados ou None em caso de falha.
     """
     try:
-        dados = open_file("/Users/emmanoelcardoso/Desktop/ciasAI/dados/Tweets.csv")
+        dados = open_file("")
         if dados:
             for tweet in dados:
                 tweet['tweet_created'] = datetime.strptime(tweet['tweet_created'], "%Y-%m-%d %H:%M:%S %z")
