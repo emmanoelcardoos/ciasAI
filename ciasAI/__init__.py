@@ -1,19 +1,19 @@
 # __init__.py da subpasta ciasAI/
-from .leitor_dados import open_file
-from .analise_sentimento import (
+from ciasAI.leitor_dados import open_file
+from ciasAI.analise_sentimento import (
     contador_sentiment,
     positive_tweet,
     porcentage_sentimento,
     filtro_tweet,
 )
-from .analise_cia import (
+from ciasAI.analise_cia import (
     realizar_login,
     total_tweets_por_companhia,
     listar_companhias,
     filtrar_tweets_por_companhia,
     companhia_com_mais_tweets_negativos,
 )
-from .processamento_temporal import dia_com_mais_tweets, contar_tweets_por_periodo
+from ciasAI.processamento_temporal import dia_com_mais_tweets, contar_tweets_por_periodo
 
 # Expondo os elementos internos como uma interface da subpasta
 __all__ = [
