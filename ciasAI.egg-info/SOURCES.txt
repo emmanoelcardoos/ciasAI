@@ -1,0 +1,17 @@
+README.md
+setup.py
+ciasAI/__init__.py
+ciasAI/analise_cia.py
+ciasAI/analise_sentimento.py
+ciasAI/excessoes_logs.py
+ciasAI/leitor_dados.py
+ciasAI/processamento_temporal.py
+ciasAI.egg-info/PKG-INFO
+ciasAI.egg-info/SOURCES.txt
+ciasAI.egg-info/dependency_links.txt
+ciasAI.egg-info/requires.txt
+ciasAI.egg-info/top_level.txt
+tests/test_analise_cias.py
+tests/test_analise_sentimento.py
+tests/test_leitor_dados.py
+tests/test_processamento_temporal.py
