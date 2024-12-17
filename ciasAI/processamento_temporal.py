@@ -50,32 +50,37 @@ def contar_tweets_por_periodo(ano: int, mes: Optional[int] = None) -> int:
     print(f"Total de tweets no período: {total_tweets}")
     return total_tweets
 
-def dia_com_mais_tweets() -> Optional[Tuple[datetime.date, int]]:
-    """
-    Identifica o dia com o maior número de tweets.
+# processamento_temporal.py
 
-    Returns:
-        Optional[Tuple[datetime.date, int]]: Dia com mais tweets e o total de tweets ou None em caso de falha.
+def dia_com_mais_tweets(dados):
     """
-    dados = carregar_dados()
-    if dados is None:
-        print("Não foi possível carregar os dados.")
+    Função para determinar o dia com mais tweets no conjunto de dados
+    sem usar pandas, apenas com listas e operações básicas.
+    :param dados: Conjunto de dados com as informações carregadas por open_file()
+    :return: Data com mais tweets.
+    """
+    try:
+        # Contagem de ocorrências de datas com listas e dicionários
+        contagem_datas = {}
+        
+        # Iterar sobre as linhas dos dados
+        for tweet in dados:
+            data = tweet.get("data")  # Obtendo o campo de data
+            if data:  # Se a data existir
+                if data in contagem_datas:
+                    contagem_datas[data] += 1
+                else:
+                    contagem_datas[data] = 1
+
+        # Encontrar a data com maior contagem
+        if contagem_datas:
+            dia_mais_tweets = max(contagem_datas, key=contagem_datas.get)  # Data com maior número de ocorrências
+            return dia_mais_tweets
+        else:
+            return None
+    except Exception as e:
+        print(f"Erro ao processar os dados: {e}")
         return None
 
-    contagem_dias = {}
-    for tweet in dados:
-        # Apenas considerar a data dos tweets
-        data_tweet = tweet['tweet_created'].date()
-        contagem_dias[data_tweet] = contagem_dias.get(data_tweet, 0) + 1
-
-    if not contagem_dias:
-        print("Nenhum dado válido para análise foi encontrado.")
-        return None
-
-    dia_mais_tweets = max(contagem_dias, key=contagem_dias.get)
-    total_tweets = contagem_dias[dia_mais_tweets]
-
-    print(f"Dia com mais tweets: {dia_mais_tweets}, Total de tweets: {total_tweets}")
-    return dia_mais_tweets, total_tweets
 
 
