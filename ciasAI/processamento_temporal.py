@@ -11,15 +11,15 @@ def open_file(caminho: str) -> Optional[List[Dict[str, str]]]:
     :return: Lista de dicionários com os dados ou None em caso de falha.
     """
     try:
-        # Verifica se o caminho existe
+        # Verifica se o arquivo existe no caminho fornecido
         if not os.path.isfile(caminho):
-            raise FileNotFoundError(f"Erro: Arquivo não encontrado no caminho '{caminho}'.")
+            raise FileNotFoundError(f"Arquivo não encontrado: {caminho}")
 
         with open(caminho, mode='r', encoding='utf-8') as arquivo:
             leitor = csv.DictReader(arquivo)
             return [linha for linha in leitor]
     except FileNotFoundError as e:
-        print(e)
+        print(f"Erro: {e}")
         return None
     except Exception as e:
         print(f"Erro ao abrir o arquivo: {e}")
@@ -29,7 +29,6 @@ def open_file(caminho: str) -> Optional[List[Dict[str, str]]]:
 def carregar_dados(caminho: Optional[str] = None) -> Optional[List[Dict[str, str]]]:
     """
     Carrega os dados do arquivo CSV e converte a coluna de datas para objetos datetime.
-    O caminho padrão é buscado na subpasta 'data/'.
 
     Args:
         caminho (Optional[str]): Caminho para o arquivo CSV.
@@ -37,27 +36,20 @@ def carregar_dados(caminho: Optional[str] = None) -> Optional[List[Dict[str, str
     Returns:
         Optional[List[Dict[str, str]]]: Dados processados ou None em caso de falha.
     """
-    # Se nenhum caminho for fornecido, define o caminho padrão
-    if not caminho:
-        caminho = os.path.join(os.getcwd(), "data", "Tweets.csv")
-
-    # Carrega dados com validação
     try:
+        # Se o caminho não for fornecido, gera o caminho padrão relativo
+        if caminho is None:
+            # Caminho relativo com base no diretório atual onde está o código principal
+            caminho = os.path.join(os.path.dirname(__file__), "../../dados/Tweets.csv")
+
         dados = open_file(caminho)
         if dados:
-            # Converte a coluna de datas para objetos datetime
             for tweet in dados:
-                try:
-                    tweet['tweet_created'] = datetime.strptime(tweet['tweet_created'], "%Y-%m-%d %H:%M:%S %z")
-                except ValueError:
-                    print(f"Erro: Formato de data inválido para '{tweet.get('tweet_created')}'.")
-                    continue
-            return dados
-        else:
-            print("Erro ao carregar os dados: Arquivo vazio ou inexistente.")
-            return None
+                # Conversão segura da coluna de datas para datetime
+                tweet['tweet_created'] = datetime.strptime(tweet['tweet_created'], "%Y-%m-%d %H:%M:%S %z")
+        return dados
     except Exception as e:
-        print(f"Erro inesperado ao carregar dados: {e}")
+        print(f"Erro ao carregar dados: {e}")
         return None
 
 
@@ -127,6 +119,4 @@ def dia_com_mais_tweets(dados: List[Dict[str, str]]) -> Optional[str]:
     except Exception as e:
         print(f"Erro ao processar os dados: {e}")
         return None
-
-
 
