@@ -1,8 +1,8 @@
+import os
 from collections import Counter, defaultdict
-from .leitor_dados import open_file  # Usando open_file para carregar os dados
+from ciasAI.leitor_dados import open_file  
 from typing import List, Dict
 
-# Função para contar os sentimentos
 def contador_sentiment(data: List[Dict[str, str]]) -> Counter:
     """
     Conta a quantidade de tweets para cada sentimento.
@@ -16,7 +16,6 @@ def contador_sentiment(data: List[Dict[str, str]]) -> Counter:
     sent_count = Counter(row['airline_sentiment'] for row in data)
     return sent_count
 
-# Função para encontrar a companhia com mais tweets positivos
 def positive_tweet(data: List[Dict[str, str]]) -> str:
     """
     Encontra a companhia com mais tweets positivos.
@@ -32,7 +31,6 @@ def positive_tweet(data: List[Dict[str, str]]) -> str:
     )
     return companhia_positivos.most_common(1)[0][0] if companhia_positivos else "Nenhuma companhia com tweets positivos"
 
-# Função para calcular a percentagem de sentimentos por companhia
 def porcentage_sentimento(data: List[Dict[str, str]]) -> Dict[str, Dict[str, float]]:
     """
     Calcula a percentagem de sentimentos para cada companhia.
@@ -59,7 +57,6 @@ def porcentage_sentimento(data: List[Dict[str, str]]) -> Dict[str, Dict[str, flo
 
     return percentagens
 
-# Função para filtrar tweets por companhia
 def filtro_tweet(data: List[Dict[str, str]], companhia: str) -> List[Dict[str, str]]:
     """
     Filtra tweets por companhia.
@@ -73,27 +70,31 @@ def filtro_tweet(data: List[Dict[str, str]], companhia: str) -> List[Dict[str, s
     """
     return [row for row in data if row['airline'] == companhia]
 
-# Exemplo de uso: Carregar e analisar dados do CSV
 if __name__ == "__main__":
-    # Caminho correto para o arquivo
-    file_path = '/Users/emmanoelcardoso/Desktop/ciasAI/dados/Tweets.csv'  # Atualize com o caminho correto
+    
+    current_dir = os.getcwd()  
+    file_path = os.path.join(current_dir, "Desktop", "ciasAI", "dados", "Tweets.csv")
 
-    # Carregar os dados
+
+    
     data = open_file(file_path)
 
     if data:
-        # Contagem de tweets por sentimento
+        
         print("Contagem de tweets por sentimento:", contador_sentiment(data))
 
-        # Companhia com mais tweets positivos
+        
         print("Companhia com mais tweets positivos:", positive_tweet(data))
 
-        # Percentagem de sentimentos por companhia
+        
         print("Percentagem de sentimentos por companhia:", porcentage_sentimento(data))
 
-        # Filtro de tweets de uma companhia específica
-        companhia_especifica = "Delta"  # Substitua pelo nome da companhia desejada
+        
+        companhia_especifica = "Delta"  
         tweets_delta = filtro_tweet(data, companhia_especifica)
         print(f"Detalhes dos tweets da companhia {companhia_especifica}:", tweets_delta)
     else:
         print("Erro ao carregar os dados.")
+        
+        
+#Ao executar este código tenha em conta que o arquivo ciasAI encontra-se no desktop

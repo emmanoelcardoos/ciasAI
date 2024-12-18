@@ -11,7 +11,7 @@ def open_file(caminho: str) -> Optional[List[Dict[str, str]]]:
     :return: Lista de dicionários com os dados ou None em caso de falha.
     """
     try:
-        # Verifica se o arquivo existe no caminho fornecido
+        
         if not os.path.isfile(caminho):
             raise FileNotFoundError(f"Arquivo não encontrado: {caminho}")
 
@@ -37,15 +37,15 @@ def carregar_dados(caminho: Optional[str] = None) -> Optional[List[Dict[str, str
         Optional[List[Dict[str, str]]]: Dados processados ou None em caso de falha.
     """
     try:
-        # Se o caminho não for fornecido, gera o caminho padrão relativo
+        
         if caminho is None:
-            # Caminho relativo com base no diretório atual onde está o código principal
+            
             caminho = os.path.join(os.path.dirname(__file__), "../../dados/Tweets.csv")
 
         dados = open_file(caminho)
         if dados:
             for tweet in dados:
-                # Conversão segura da coluna de datas para datetime
+                
                 tweet['tweet_created'] = datetime.strptime(tweet['tweet_created'], "%Y-%m-%d %H:%M:%S %z")
         return dados
     except Exception as e:
@@ -98,22 +98,22 @@ def dia_com_mais_tweets(dados: List[Dict[str, str]]) -> Optional[str]:
         Optional[str]: Data com mais tweets ou None.
     """
     try:
-        # Contagem de ocorrências de datas com listas e dicionários
+        
         contagem_datas = {}
 
-        # Iterar sobre as linhas dos dados
+        
         for tweet in dados:
-            data = tweet.get("tweet_created").date()  # Obtendo a data como objeto
-            if data:  # Se a data existir
+            data = tweet.get("tweet_created").date()  
+            if data:  
                 if data in contagem_datas:
                     contagem_datas[data] += 1
                 else:
                     contagem_datas[data] = 1
 
-        # Encontrar a data com maior contagem
+        
         if contagem_datas:
-            dia_mais_tweets = max(contagem_datas, key=contagem_datas.get)  # Data com maior número de ocorrências
-            return str(dia_mais_tweets)  # Convertendo para string
+            dia_mais_tweets = max(contagem_datas, key=contagem_datas.get)  
+            return str(dia_mais_tweets)  
         else:
             return None
     except Exception as e:
