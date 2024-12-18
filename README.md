@@ -39,10 +39,31 @@ Para instalar o pacote, siga as instruções abaixo:
 
 1\. Clone o repositório para seu diretório local. O link do repositório
 é:
-\[https://github.com/emmanoelcardoos/ciasAI\](https://github.com/emmanoelcardoos/ciasAI).
+\[https://github.com/emmanoelcardoos/ciasAI
+obs: se fizer git clone é preciso usar o caminho absoluto do pacote baixado para executar no jupyter notebook.
+exemplo: import sys
+sys.path.append('/caminho/absoluto/para/ciasAI') 
+from ciasAI.analise_sentimento import contador_sentiment # importacao de uma funcao especifica de um modulo especifico como exempplo
+
 
 2\. Em seguida, instale as dependências do pacote:
 
-bash ou terminal
+pip install git+ https://github.com/emmanoelcardoos/ciasAI
+
+3 / instale as dependencias do pacote: 
 
 pip install -r requirements.txt
+
+4/ Fazer download do arquivo csv a ser lido pelo programa:
+
+https://www.kaggle.com/datasets/crowdflower/twitter-airline-sentiment
+
+Agora que já está tudo instalado, siga os passos abaixo para excutar as funcoes do pacote:
+ 
+ 1: Abra o Jupyter Notebook
+ 2: abra uma cédula e introduza "import ciasAI"; se nao correr bem, talvez seja necessario instalar o pacote dentro do diretorio python do seu pc
+ 3: após a importacao do pacote no jupyter notebook, execiute o seguinte comando:
+    file_path = 'caminho do ficheiro csv no seu pc'
+    dados = open_file(file_path)
+5/ importar 
+

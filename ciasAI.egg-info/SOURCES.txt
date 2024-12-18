@@ -1,11 +1,5 @@
 README.md
 setup.py
-ciasAI/__init__.py
-ciasAI/analise_cia.py
-ciasAI/analise_sentimento.py
-ciasAI/excessoes_logs.py
-ciasAI/leitor_dados.py
-ciasAI/processamento_temporal.py
 ciasAI.egg-info/PKG-INFO
 ciasAI.egg-info/SOURCES.txt
 ciasAI.egg-info/dependency_links.txt
