@@ -1,6 +1,6 @@
 # __init__.py no diretório raiz
-from .leitor_dados import open_file
-from .analise_sentimento import (
+from ciasAI.leitor_dados import open_file
+from ciasAI.analise_sentimento import (
     contador_sentiment,
     positive_tweet,
     porcentage_sentimento,
@@ -15,7 +15,6 @@ from ciasAI.analise_cia import (
 )
 from ciasAI.processamento_temporal import dia_com_mais_tweets, contar_tweets_por_periodo
 
-# Expõe as funções para fácil acesso
 __all__ = [
     "open_file",
     "contador_sentiment",
