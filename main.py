@@ -6,6 +6,8 @@ import csv
 from datetime import datetime
 from importlib.resources import files
 
+# modulo leitor_dados
+
 def get_file_path() -> str:
     try:
         
@@ -28,47 +30,52 @@ def open_file(caminho: str) -> Optional[List[Dict[str, str]]]:
         return None
 
 
-
-logging.basicConfig(
-    filename='login.log',
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
+#modulo analise_cia
+from ciasAI.analise_cia import (
+    total_tweets_por_companhia,
+    listar_companhias,
+    filtrar_tweets_por_companhia,
+    companhia_com_mais_tweets_negativos
 )
 
+def main():
+    
+    tweets_data = [
+        {"airline": "Delta", "airline_sentiment": "positive"},
+        {"airline": "United", "airline_sentiment": "negative"},
+        {"airline": "Delta", "airline_sentiment": "negative"},
+        {"airline": "United", "airline_sentiment": "positive"},
+        {"airline": "Delta", "airline_sentiment": "neutral"},
+        {"airline": "Southwest", "airline_sentiment": "negative"},
+    ]
 
-def realizar_login(user: str, password: str) -> bool:
-    if user == "main" and password == "123456":
-        logging.info(f"Login bem-sucedido para o utilizador: {user}")
-        return True
-    else:
-        logging.info(f"Tentativa de login falhou para o utilizador: {user}")
-        return False
+    
+
+    # 1. Total de tweets por companhia
+    print("Exemplo 1: Total de tweets por companhia")
+    total_tweets = total_tweets_por_companhia(tweets_data)
+    print(f"Resultado: {total_tweets}\n")
+
+    # 2. Listar todas as companhias
+    print("Exemplo 2: Lista de todas as companhias")
+    companhias = listar_companhias(tweets_data)
+    print(f"Resultado: {companhias}\n")
+
+    # 3. Filtrar tweets de uma companhia específica (ex.: Delta)
+    print("Exemplo 3: Filtrar tweets por companhia (Delta)")
+    tweets_delta = filtrar_tweets_por_companhia(tweets_data, "Delta")
+    print(f"Resultado: {tweets_delta}\n")
+
+    # 4. Identificar a companhia com mais tweets negativos
+    print("Exemplo 4: Companhia com mais tweets negativos")
+    companhia_mais_negativa = companhia_com_mais_tweets_negativos(tweets_data)
+    print(f"Resultado: {companhia_mais_negativa}\n")
+
+if __name__ == "__main__":
+    main()
 
 
-
-def total_tweets_por_companhia(data: List[Dict[str, str]]) -> Dict[str, int]:
-    contagem = Counter(row['airline'] for row in data)
-    return dict(contagem)
-
-
-
-def listar_companhias(data: List[Dict[str, str]]) -> List[str]:
-    companhias = {row['airline'] for row in data}
-    return list(companhias)
-
-
-
-def filtrar_tweets_por_companhia(data: List[Dict[str, str]], companhia: str) -> List[Dict[str, str]]:
-    return [row for row in data if row['airline'] == companhia]
-
-
-
-def companhia_com_mais_tweets_negativos(data: List[Dict[str, str]]) -> str:
-    negativos = [row['airline'] for row in data if row['airline_sentiment'] == 'negative']
-    contagem_negativos = Counter(negativos)
-    return max(contagem_negativos, key=contagem_negativos.get) if contagem_negativos else "Nenhuma companhia com tweets negativos"
-
+# modulo analise_sentimento
 
 def contador_sentiment(data: List[Dict[str, str]]) -> Counter:
     sent_count = Counter(row['airline_sentiment'] for row in data)

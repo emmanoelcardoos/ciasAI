@@ -7,7 +7,6 @@ from ciasAI.analise_sentimento import (
     filtro_tweet,
 )
 from ciasAI.analise_cia import (
-    realizar_login,
     total_tweets_por_companhia,
     listar_companhias,
     filtrar_tweets_por_companhia,
@@ -22,7 +21,6 @@ __all__ = [
     "positive_tweet",
     "porcentage_sentimento",
     "filtro_tweet",
-    "realizar_login",
     "total_tweets_por_companhia",
     "listar_companhias",
     "filtrar_tweets_por_companhia",

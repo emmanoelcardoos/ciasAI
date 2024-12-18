@@ -12,7 +12,7 @@ def open_file(caminho: str) -> Optional[List[Dict[str, str]]]:
     """
     try:
         
-        if not os.path.isfile(caminho):
+        if not os.path.isfile(caminho): 
             raise FileNotFoundError(f"Arquivo não encontrado: {caminho}")
 
         with open(caminho, mode='r', encoding='utf-8') as arquivo:
